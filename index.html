@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Aviator Betting Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f2f2f2;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #ddd;
+    }
+    .win {
+      background-color: #d4edda;
+    }
+    .loss {
+      background-color: #f8d7da;
+    }
+    .summary {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aviator Betting Bot</h1>
+  <button onclick="startSimulation()">Start Simulation</button>
+
+  <table id="logTable">
+    <thead>
+      <tr>
+        <th>Round</th>
+        <th>Bet</th>
+        <th>Multiplier</th>
+        <th>Result</th>
+        <th>Balance</th>
+        <th>Net Profit</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="summary" id="summary"></div>
+
+  <script src="aviator-bot.js"></script>
+</body>
+</html>
