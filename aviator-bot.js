@@ -1,17 +1,6 @@
-let balance = 100;
-let targetProfit = 1;
-let maxLoss = 5;
-let totalProfit = 0;
-let currentBet = 0.10;
-let baseBet = 0.10;
-let targetMultiplier = 1.3;
-let round = 0;
+let cumulativeLosses = 0;
 
-function getRandomMultiplier() {
-  return +(Math.random() * 9 + 1).toFixed(2); // 1.00 to 10.00
-}
-
-function logToTable(round, bet, multiplier, result, balance, netProfit) {
+function logToTable(round, bet, multiplier, result, balance, netProfit, cumulativeLosses) {
   const table = document.getElementById('logTable').getElementsByTagName('tbody')[0];
   const row = table.insertRow();
   row.className = result === 'WIN' ? 'win' : 'loss';
@@ -21,6 +10,7 @@ function logToTable(round, bet, multiplier, result, balance, netProfit) {
   row.insertCell(3).innerText = result;
   row.insertCell(4).innerText = `$${balance.toFixed(2)}`;
   row.insertCell(5).innerText = `$${netProfit.toFixed(2)}`;
+  row.insertCell(6).innerText = `$${cumulativeLosses.toFixed(2)}`;
 }
 
 function simulateBet() {
@@ -38,17 +28,18 @@ function simulateBet() {
   } else {
     balance -= currentBet;
     totalProfit -= currentBet;
+    cumulativeLosses += currentBet;  // <-- Add current bet to cumulative losses
     result = 'LOSS';
     currentBet = +(currentBet * 2).toFixed(2);
   }
 
-  logToTable(round, currentBet, multiplier, result, balance, totalProfit);
+  logToTable(round, currentBet, multiplier, result, balance, totalProfit, cumulativeLosses);
 
   if (totalProfit >= targetProfit) {
     document.getElementById('summary').innerText = `🎯 Target Reached: Profit $${totalProfit.toFixed(2)}`;
     return false;
-  } else if (Math.abs(totalProfit) >= maxLoss) {
-    document.getElementById('summary').innerText = `🛑 Max Loss Reached: Lost $${Math.abs(totalProfit).toFixed(2)}`;
+  } else if (cumulativeLosses >= maxLoss) {
+    document.getElementById('summary').innerText = `🛑 Max Loss Reached: Lost $${cumulativeLosses.toFixed(2)}`;
     return false;
   }
 
@@ -58,11 +49,12 @@ function simulateBet() {
 function startSimulation() {
   balance = 100;
   totalProfit = 0;
+  cumulativeLosses = 0;   // reset losses on new simulation
   currentBet = baseBet;
   round = 0;
   document.getElementById('logTable').getElementsByTagName('tbody')[0].innerHTML = '';
   document.getElementById('summary').innerText = '';
-  
+
   let keepGoing = true;
   while (keepGoing) {
     keepGoing = simulateBet();
